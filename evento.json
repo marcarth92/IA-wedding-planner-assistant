@@ -1,0 +1,40 @@
+{
+  "evento": {
+    "nombre": "Boda de Carla y Diego",
+    "fecha": "12 Octubre 2026",
+    "lugar": "Hacienda Los Olivos"
+  },
+  "equipo": [
+    {
+      "nombre": "Ana",
+      "rol": "flores"
+    },
+    {
+      "nombre": "Luis",
+      "rol": "catering"
+    },
+    {
+      "nombre": "Sofia",
+      "rol": "musica"
+    }
+  ],
+  "proveedores": [
+    {
+      "servicio": "flores",
+      "empresa": "Florer\u00eda Luna"
+    },
+    {
+      "servicio": "catering",
+      "empresa": "Banquetes del Valle"
+    },
+    {
+      "servicio": "musica",
+      "empresa": "DJ Sunset"
+    }
+  ],
+  "estado": {
+    "flores": "listo",
+    "catering": "pendiente",
+    "musica": "listo"
+  }
+}
