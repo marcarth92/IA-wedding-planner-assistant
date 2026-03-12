@@ -21,7 +21,7 @@
   "proveedores": [
     {
       "servicio": "flores",
-      "empresa": "Florer\u00eda Luna"
+      "empresa": "Florereria Luna"
     },
     {
       "servicio": "catering",
@@ -33,8 +33,29 @@
     }
   ],
   "estado": {
-    "flores": "listo",
-    "catering": "pendiente",
-    "musica": "listo"
-  }
+    "flores": {
+      "estado": "pendiente",
+      "timestamp": null
+    },
+    "catering": {
+      "estado": "listo",
+      "timestamp": "2026-03-12T17:48:36.949056-06:00"
+    },
+    "musica": {
+      "estado": "listo",
+      "timestamp": "2026-03-12T23:42:33.940931"
+    }
+  },
+  "historial": [
+    {
+      "tarea": "musica",
+      "estado": "listo",
+      "timestamp": "2026-03-12T23:42:33.940931"
+    },
+    {
+      "tarea": "catering",
+      "estado": "listo",
+      "timestamp": "2026-03-12T17:48:36.949056-06:00"
+    }
+  ]
 }

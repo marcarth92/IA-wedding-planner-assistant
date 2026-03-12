@@ -2,6 +2,10 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
 import json
+import pytz
+from datetime import datetime
+
+mexico_tz = pytz.timezone("America/Mexico_City")
 
 load_dotenv()
 
@@ -12,12 +16,34 @@ llm = ChatOpenAI(model="gpt-4o-mini")
 # -----------------------------
 
 def load_event():
+
     with open("evento.json", "r") as f:
-        return json.load(f)
+        data = json.load(f)
+
+    # asegurar historial
+    if "historial" not in data:
+        data["historial"] = []
+
+    # migrar estado viejo a nuevo formato
+    if "estado" in data:
+
+        for tarea, valor in data["estado"].items():
+
+            if isinstance(valor, str):
+
+                data["estado"][tarea] = {
+                    "estado": valor,
+                    "timestamp": None
+                }
+
+    return data
+
 
 def save_event(data):
+
     with open("evento.json", "w") as f:
         json.dump(data, f, indent=2)
+
 
 # -----------------------------
 # Tool function
@@ -25,13 +51,29 @@ def save_event(data):
 
 def update_event_status(evento, task, status):
 
-    evento["estado"][task] = status
+    if task not in evento["estado"]:
+        return f"La tarea '{task}' no existe."
+
+    timestamp = datetime.now(mexico_tz).isoformat()
+
+    # actualizar estado
+    evento["estado"][task]["estado"] = status
+    evento["estado"][task]["timestamp"] = timestamp
+
+    # guardar en historial
+    evento["historial"].append({
+        "tarea": task,
+        "estado": status,
+        "timestamp": timestamp
+    })
+
     save_event(evento)
 
     return f"Estado actualizado: {task} -> {status}"
 
+
 # -----------------------------
-# Tools definition (OpenAI format)
+# Tools definition
 # -----------------------------
 
 tools = [
@@ -58,6 +100,7 @@ tools = [
 }
 ]
 
+
 # -----------------------------
 # Context builder
 # -----------------------------
@@ -72,9 +115,36 @@ def build_context(evento):
         [f"{p['servicio']} — {p['empresa']}" for p in evento["proveedores"]]
     )
 
-    estado_text = "\n".join(
-        [f"{k}: {v}" for k,v in evento["estado"].items()]
+    estado_lines = []
+
+    for tarea, info in evento.get("estado", {}).items():
+
+        estado = info["estado"]
+        timestamp = info["timestamp"]
+
+        if timestamp:
+
+            try:
+                hora = datetime.fromisoformat(timestamp).strftime("%H:%M")
+                estado_lines.append(f"{tarea}: {estado} (actualizado a las {hora})")
+
+            except:
+                estado_lines.append(f"{tarea}: {estado}")
+
+        else:
+
+            estado_lines.append(f"{tarea}: {estado}")
+
+    estado_text = "\n".join(estado_lines)
+
+    historial = evento.get("historial", [])
+
+    historial_text = "\n".join(
+        [f"{h['tarea']} -> {h['estado']} ({h['timestamp']})" for h in historial]
     )
+
+    if historial_text == "":
+        historial_text = "Sin actualizaciones aún."
 
     context = f"""
 Eres un asistente que ayuda a coordinar un evento de boda.
@@ -92,8 +162,19 @@ Proveedores:
 Estado actual:
 {estado_text}
 
+Historial del evento:
+{historial_text}
+
+Reglas importantes:
+
 Si el usuario menciona que algo llegó, está listo o fue completado,
 usa la herramienta update_event_status para actualizar el estado.
+
+Si el usuario pregunta a qué hora ocurrió algo,
+usa el timestamp del estado para responder la hora.
+
+Por ejemplo:
+si flores tiene timestamp, esa es la hora en que llegaron.
 """
 
     return context
@@ -122,7 +203,6 @@ while True:
         tools=tools
     )
 
-    # revisar si el modelo quiere usar una tool
     tool_calls = response.additional_kwargs.get("tool_calls")
 
     if tool_calls:
