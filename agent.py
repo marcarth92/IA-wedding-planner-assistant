@@ -107,13 +107,20 @@ tools = [
 
 def build_context(evento):
 
-    equipo_text = "\n".join(
-        [f"{p['nombre']} — responsable de {p['rol']}" for p in evento["equipo"]]
-    )
 
-    proveedores_text = "\n".join(
-        [f"{p['servicio']} — {p['empresa']}" for p in evento["proveedores"]]
+    equipo = evento.get("equipo", [])
+    equipo_text = "\n".join(
+        [f"{p.get('nombre', 'Desconocido')} — responsable de {p.get('rol', 'Desconocido')}" for p in equipo]
     )
+    if not equipo_text:
+        equipo_text = "Sin equipo registrado."
+
+    proveedores = evento.get("proveedores", [])
+    proveedores_text = "\n".join(
+        [f"{p.get('servicio', 'Desconocido')} — {p.get('empresa', 'Desconocido')}" for p in proveedores]
+    )
+    if not proveedores_text:
+        proveedores_text = "Sin proveedores registrados."
 
     estado_lines = []
 
@@ -146,12 +153,18 @@ def build_context(evento):
     if historial_text == "":
         historial_text = "Sin actualizaciones aún."
 
+
+    evento_info = evento.get("evento", {})
+    nombre = evento_info.get("nombre", "Nombre no registrado")
+    fecha = evento_info.get("fecha", "Fecha no registrada")
+    lugar = evento_info.get("lugar", "Lugar no registrado")
+
     context = f"""
 Eres un asistente que ayuda a coordinar un evento de boda.
 
-Evento: {evento['evento']['nombre']}
-Fecha: {evento['evento']['fecha']}
-Lugar: {evento['evento']['lugar']}
+Evento: {nombre}
+Fecha: {fecha}
+Lugar: {lugar}
 
 Equipo:
 {equipo_text}
