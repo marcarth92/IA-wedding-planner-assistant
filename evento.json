@@ -19,8 +19,8 @@
         {
           "nombre": "montaje ceremonia",
           "hora": "11:00",
-          "estado": "pendiente",
-          "timestamp": null,
+          "estado": "completada",
+          "timestamp": "2026-03-18T13:27:58.555754-06:00",
           "depende_de": []
         },
         {
@@ -238,6 +238,15 @@
       "estado_nuevo": "completada",
       "timestamp": "2026-03-17T17:25:22.214724-06:00",
       "tipo": "actualizacion",
+      "source": "llm"
+    },
+    {
+      "tarea": "montaje ceremonia",
+      "responsable": "Ana",
+      "estado_anterior": "pendiente",
+      "estado_nuevo": "completada",
+      "timestamp": "2026-03-18T13:27:58.555754-06:00",
+      "tipo": "progreso",
       "source": "llm"
     }
   ]

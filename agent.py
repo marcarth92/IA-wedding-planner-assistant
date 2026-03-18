@@ -6,7 +6,7 @@ import sys
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
-from langchain.schema import HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage
 
 from src.models import load_event
 from src.coordinator import (
@@ -15,7 +15,6 @@ from src.coordinator import (
     update_person_task,
     undo_last_change,
 )
-from src.timeline import auto_coordinator
 
 load_dotenv()
 
@@ -81,13 +80,6 @@ def main():
     while True:
         evento = load_event()
 
-        acciones = auto_coordinator(evento)
-        if acciones:
-            print("\n🤖 Recomendaciones:")
-            for a in acciones:
-                print("-", a)
-            print()
-
         try:
             user_input = input("Pregunta: ")
         except (KeyboardInterrupt, EOFError):
@@ -112,12 +104,12 @@ def main():
             conversation_history.pop()
             continue
 
-        tool_calls = response.additional_kwargs.get("tool_calls", [])
+        tool_calls = getattr(response, "tool_calls", [])
 
         if tool_calls:
             for tool_call in tool_calls:
-                name = tool_call["function"]["name"]
-                args = json.loads(tool_call["function"]["arguments"])
+                name = tool_call["name"]
+                args = tool_call["args"]
                 handler = TOOL_MAP.get(name)
                 if handler:
                     result = handler(evento, args)
