@@ -1,4 +1,4 @@
-#!/Users/marcoramirez/wedding_ai_agent/venv/bin/python
+#!/home/ericsson/workspace/IA-Development/IA-wedding-planner-assistant/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
