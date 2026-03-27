@@ -6,7 +6,7 @@ import sys
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -21,6 +21,7 @@ if not os.getenv("OPENAI_API_KEY"):
     sys.exit("Error: OPENAI_API_KEY no esta configurada.")
 
 app = FastAPI()
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 llm = ChatOpenAI(model="gpt-4o-mini")
 skills = discover_skills()
 TOOLS = [s.schema() for s in skills]
