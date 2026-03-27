@@ -15,7 +15,7 @@ from src.models import load_event
 from src.coordinator import build_context
 from src.skills import discover_skills
 
-load_dotenv()
+load_dotenv(override=False)
 
 if not os.getenv("OPENAI_API_KEY"):
     sys.exit("Error: OPENAI_API_KEY no esta configurada.")
