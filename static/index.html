@@ -242,7 +242,7 @@
       addMsg(data.response, 'bot');
       loadData();
     } catch (e) {
-      addMsg('Error de conexion', 'bot');
+      addMsg('Error de conexion: ' + e.message, 'bot');
     }
     send.disabled = false;
     input.focus();

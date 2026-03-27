@@ -36,7 +36,8 @@ class ChatRequest(BaseModel):
 @app.get("/", response_class=HTMLResponse)
 def index():
     with open("static/index.html") as f:
-        return f.read()
+        content = f.read()
+    return HTMLResponse(content=content, headers={"Cache-Control": "no-store"})
 
 
 @app.get("/api/evento")
