@@ -104,6 +104,10 @@ def build_context(evento):
         ])
         equipo_text += f"{p['nombre']} ({p['rol']}):\n{tareas}\n\n"
 
+    proveedores_text = "\n".join([
+        f"- {p['servicio']}: {p['empresa']}" for p in evento.get("proveedores", [])
+    ]) or "Sin proveedores"
+
     estado_text = "\n".join([f"{k}: {v['estado']}" for k, v in evento["estado"].items()])
     acciones_text = "\n".join(acciones) or "Sin alertas"
 
@@ -112,7 +116,10 @@ def build_context(evento):
 Estado:
 {estado_text}
 
-Equipo:
+Proveedores:
+{proveedores_text}
+
+Equipo (staff del wedding planner):
 {equipo_text}
 
 Análisis:
