@@ -39,6 +39,11 @@ def index():
         return f.read()
 
 
+@app.get("/api/evento")
+def get_evento():
+    return load_event()
+
+
 @app.post("/chat")
 def chat(req: ChatRequest):
     evento = load_event()
