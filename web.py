@@ -1,19 +1,22 @@
 """Wedding AI Agent — Web API."""
 
+import json
 import os
 import sys
+import tempfile
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
 
-from src.models import load_event
+from src.models import load_event, save_event
 from src.coordinator import build_context
 from src.skills import discover_skills
+from src.excel_parser import parse_excel, create_template
 
 load_dotenv(override=False)
 
@@ -44,6 +47,28 @@ def index():
 @app.get("/api/evento")
 def get_evento():
     return load_event()
+
+
+@app.get("/api/template")
+def download_template():
+    path = tempfile.mktemp(suffix=".xlsx")
+    create_template(path)
+    return FileResponse(path, filename="evento_template.xlsx",
+                        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+
+@app.post("/api/upload")
+async def upload_excel(file: UploadFile = File(...)):
+    path = tempfile.mktemp(suffix=".xlsx")
+    with open(path, "wb") as f:
+        f.write(await file.read())
+    try:
+        data = parse_excel(path)
+        save_event(data)
+        conversation_history.clear()
+        return {"ok": True, "evento": data["evento"]["nombre"]}
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
 
 
 @app.post("/chat")

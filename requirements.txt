@@ -4,3 +4,5 @@ python-dotenv
 pytz
 fastapi
 uvicorn[standard]
+openpyxl
+python-multipart

@@ -65,6 +65,11 @@
   #send { padding: 10px 20px; background: #0084ff; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 0.95rem; }
   #send:disabled { opacity: 0.5; cursor: not-allowed; }
 
+  .btn-sm { padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; text-decoration: none; cursor: pointer; border: 1px solid #ccc; background: #fff; color: #333; }
+  .btn-sm:hover { background: #f0f0f0; }
+  .btn-primary { background: #0084ff; color: #fff; border-color: #0084ff; }
+  .btn-primary:hover { background: #0070dd; }
+
   /* Progress bar */
   .progress-bar { background: #e9ecef; border-radius: 8px; height: 8px; overflow: hidden; }
   .progress-fill { height: 100%; background: #28a745; border-radius: 8px; transition: width 0.3s; }
@@ -78,7 +83,13 @@
     <div class="tab" data-panel="team-panel">Equipo</div>
     <div class="tab" data-panel="vendors-panel">Proveedores</div>
     <div class="tab" data-panel="chat-panel">Chat</div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;padding-right:12px">
+      <a href="/api/template" class="btn-sm">Descargar Template</a>
+      <label class="btn-sm btn-primary" for="upload-input">Subir Excel</label>
+      <input type="file" id="upload-input" accept=".xlsx" hidden>
+    </div>
   </div>
+  <div id="upload-msg" style="display:none;padding:10px 20px;font-size:0.85rem"></div>
 
   <!-- Dashboard -->
   <div id="dashboard-panel" class="panel active">
@@ -250,6 +261,35 @@
 
   send.addEventListener('click', sendMessage);
   input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+
+  // Upload Excel
+  document.getElementById('upload-input').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const msg = document.getElementById('upload-msg');
+    msg.style.display = 'block';
+    msg.style.background = '#fff3cd';
+    msg.textContent = 'Cargando evento...';
+    const form = new FormData();
+    form.append('file', file);
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: form });
+      const data = await res.json();
+      if (data.ok) {
+        msg.style.background = '#d4edda';
+        msg.textContent = 'Evento cargado: ' + data.evento;
+        loadData();
+      } else {
+        msg.style.background = '#f8d7da';
+        msg.textContent = 'Error: ' + data.error;
+      }
+    } catch(err) {
+      msg.style.background = '#f8d7da';
+      msg.textContent = 'Error de conexion';
+    }
+    e.target.value = '';
+    setTimeout(() => msg.style.display = 'none', 4000);
+  });
 
   loadData();
 </script>
