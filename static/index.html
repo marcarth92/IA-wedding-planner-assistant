@@ -7,64 +7,61 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: system-ui, sans-serif; background: #f0f2f5; height: 100vh; display: flex; flex-direction: column; }
-
   #header { background: #2c2c2c; color: #fff; padding: 14px 20px; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
   #header span { font-size: 0.85rem; opacity: 0.6; }
-
   #tabs { display: flex; background: #fff; border-bottom: 2px solid #e0e0e0; }
   .tab { padding: 12px 24px; cursor: pointer; font-size: 0.95rem; color: #555; border-bottom: 3px solid transparent; transition: all 0.2s; }
   .tab:hover { color: #000; }
   .tab.active { color: #0084ff; border-bottom-color: #0084ff; font-weight: 600; }
-
   .panel { display: none; flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; }
   .panel.active { display: flex; flex-direction: column; }
-
   .card { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
   .card h3 { font-size: 0.95rem; margin-bottom: 10px; color: #333; }
   .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
-
   .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 600; }
   .badge-pendiente { background: #fff3cd; color: #856404; }
   .badge-listo, .badge-completada { background: #d4edda; color: #155724; }
   .badge-entregado { background: #cce5ff; color: #004085; }
-
   .event-info { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
   .event-info .card { flex: 1; min-width: 200px; text-align: center; }
   .event-info .card .value { font-size: 1.5rem; font-weight: 700; color: #0084ff; }
   .event-info .card .label { font-size: 0.8rem; color: #888; margin-top: 4px; }
-
   .person { margin-bottom: 14px; }
   .person-header { font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
   .person-role { font-size: 0.78rem; color: #888; font-weight: 400; }
+  .person-extras { font-size: 0.78rem; color: #666; margin-bottom: 6px; padding-left: 12px; }
   .task-list { list-style: none; padding-left: 12px; }
   .task-list li { padding: 4px 0; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; }
   .task-time { color: #888; font-size: 0.78rem; min-width: 45px; }
-
   .vendor-card { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
   .vendor-card:last-child { border-bottom: none; }
   .vendor-name { font-weight: 600; font-size: 0.9rem; }
   .vendor-service { font-size: 0.8rem; color: #888; }
-
+  .vendor-extras { font-size: 0.75rem; color: #666; margin-top: 2px; }
   .progress-bar { background: #e9ecef; border-radius: 8px; height: 8px; overflow: hidden; }
   .progress-fill { height: 100%; background: #28a745; border-radius: 8px; transition: width 0.3s; }
-
   .btn-sm { padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; text-decoration: none; cursor: pointer; border: 1px solid #ccc; background: #fff; color: #333; display: inline-block; }
   .btn-sm:hover { background: #f0f0f0; }
   .btn-primary { background: #0084ff; color: #fff; border-color: #0084ff; }
   .btn-primary:hover { background: #0070dd; }
-
-  /* Forms */
-  .form-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: flex-end; }
-  .form-row input { padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.85rem; }
-  .form-row button { padding: 8px 16px; border: none; border-radius: 6px; background: #0084ff; color: #fff; cursor: pointer; font-size: 0.85rem; }
-  .form-row button:hover { background: #0070dd; }
-  .form-label { font-size: 0.75rem; color: #888; display: block; margin-bottom: 2px; }
-  .form-group { display: flex; flex-direction: column; }
-  .form-msg { font-size: 0.8rem; margin-top: 6px; padding: 4px 8px; border-radius: 4px; display: none; }
-
   .del-btn { background: none; border: none; color: #cc0000; cursor: pointer; font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; }
   .del-btn:hover { background: #fee; }
-
+  /* Forms */
+  .form-section { background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 14px; margin-top: 10px; }
+  .form-row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; align-items: flex-end; }
+  .form-group { display: flex; flex-direction: column; }
+  .form-group label { font-size: 0.75rem; color: #888; margin-bottom: 2px; }
+  .form-group input, .form-group select { padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.85rem; }
+  .form-group select { min-width: 120px; }
+  .form-group input:focus, .form-group select:focus { border-color: #0084ff; outline: none; }
+  .form-btn { padding: 8px 16px; border: none; border-radius: 6px; background: #0084ff; color: #fff; cursor: pointer; font-size: 0.85rem; align-self: flex-end; }
+  .form-btn:hover { background: #0070dd; }
+  .form-btn-sm { padding: 4px 10px; font-size: 0.78rem; background: #6c757d; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+  .form-btn-sm:hover { background: #5a6268; }
+  .extras-row { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; }
+  .extras-row input { padding: 5px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.8rem; }
+  .extras-container { margin-top: 6px; }
+  .form-msg { font-size: 0.8rem; margin-top: 6px; padding: 4px 8px; border-radius: 4px; display: none; }
   /* Floating chat */
   #chat-toggle { position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; border-radius: 50%; background: #0084ff; color: #fff; border: none; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1000; display: flex; align-items: center; justify-content: center; }
   #chat-box { position: fixed; bottom: 86px; right: 20px; width: 380px; height: 480px; background: #fff; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.15); z-index: 1000; display: none; flex-direction: column; overflow: hidden; }
@@ -83,7 +80,6 @@
 </head>
 <body>
   <div id="header">Wedding Planner AI <span id="event-name"></span></div>
-
   <div id="tabs">
     <div class="tab active" data-panel="dashboard-panel">Evento</div>
     <div class="tab" data-panel="team-panel">Equipo</div>
@@ -100,14 +96,8 @@
   <!-- Dashboard -->
   <div id="dashboard-panel" class="panel active">
     <div class="event-info" id="event-summary"></div>
-    <div class="card">
-      <h3>Estado de Servicios</h3>
-      <div class="card-grid" id="services-grid"></div>
-    </div>
-    <div class="card">
-      <h3>Historial Reciente</h3>
-      <div id="history-list"></div>
-    </div>
+    <div class="card"><h3>Estado de Servicios</h3><div class="card-grid" id="services-grid"></div></div>
+    <div class="card"><h3>Historial Reciente</h3><div id="history-list"></div></div>
   </div>
 
   <!-- Team -->
@@ -115,21 +105,40 @@
     <div id="team-list"></div>
     <div class="card">
       <h3>Agregar Persona</h3>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label" for="new-person-name">Nombre</label><input id="new-person-name" placeholder="Nombre"></div>
-        <div class="form-group"><label class="form-label" for="new-person-role">Rol</label><input id="new-person-role" placeholder="Rol"></div>
-        <button onclick="addPerson()">Agregar</button>
+      <div class="form-section">
+        <div class="form-row">
+          <div class="form-group"><label for="new-person-name">Nombre</label><input id="new-person-name" placeholder="Nombre"></div>
+          <div class="form-group"><label for="new-person-role">Rol</label><input id="new-person-role" placeholder="Rol"></div>
+        </div>
+        <div class="extras-container" id="person-extras"></div>
+        <div class="form-row">
+          <button class="form-btn-sm" onclick="addExtraField('person-extras')">+ Campo extra</button>
+          <button class="form-btn" onclick="addPerson()">Agregar Persona</button>
+        </div>
       </div>
       <div class="form-msg" id="person-msg"></div>
     </div>
     <div class="card">
       <h3>Agregar Tarea</h3>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label" for="task-person">Persona</label><input id="task-person" placeholder="Nombre persona"></div>
-        <div class="form-group"><label class="form-label" for="task-name">Tarea</label><input id="task-name" placeholder="Nombre tarea"></div>
-        <div class="form-group"><label class="form-label" for="task-time">Hora</label><input id="task-time" placeholder="HH:MM" style="width:70px"></div>
-        <div class="form-group"><label class="form-label" for="task-dep">Depende de</label><input id="task-dep" placeholder="tarea1, tarea2"></div>
-        <button onclick="addTask()">Agregar</button>
+      <div class="form-section">
+        <div class="form-row">
+          <div class="form-group"><label for="task-person">Persona</label><select id="task-person"></select></div>
+          <div class="form-group"><label for="task-name">Tarea</label><input id="task-name" placeholder="Nombre tarea"></div>
+          <div class="form-group"><label for="task-hour">Hora</label>
+            <select id="task-hour"></select>
+          </div>
+          <div class="form-group"><label for="task-min">Min</label>
+            <select id="task-min"></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="flex:1"><label for="task-dep">Depende de</label>
+            <select id="task-dep" multiple style="min-height:60px"></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <button class="form-btn" onclick="addTask()">Agregar Tarea</button>
+        </div>
       </div>
       <div class="form-msg" id="task-msg"></div>
     </div>
@@ -140,10 +149,16 @@
     <div id="vendors-list"></div>
     <div class="card">
       <h3>Agregar Proveedor</h3>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label" for="vendor-service">Servicio</label><input id="vendor-service" placeholder="Servicio"></div>
-        <div class="form-group"><label class="form-label" for="vendor-company">Empresa</label><input id="vendor-company" placeholder="Empresa"></div>
-        <button onclick="addVendor()">Agregar</button>
+      <div class="form-section">
+        <div class="form-row">
+          <div class="form-group"><label for="vendor-service">Servicio</label><input id="vendor-service" placeholder="Servicio"></div>
+          <div class="form-group"><label for="vendor-company">Empresa</label><input id="vendor-company" placeholder="Empresa"></div>
+        </div>
+        <div class="extras-container" id="vendor-extras"></div>
+        <div class="form-row">
+          <button class="form-btn-sm" onclick="addExtraField('vendor-extras')">+ Campo extra</button>
+          <button class="form-btn" onclick="addVendor()">Agregar Proveedor</button>
+        </div>
       </div>
       <div class="form-msg" id="vendor-msg"></div>
     </div>
@@ -162,6 +177,14 @@
   </div>
 
 <script>
+  // Time selectors
+  (function(){
+    const hSel = document.getElementById('task-hour');
+    const mSel = document.getElementById('task-min');
+    for(let h=0;h<24;h++) { const o=document.createElement('option'); o.value=o.textContent=String(h).padStart(2,'0'); hSel.appendChild(o); }
+    for(let m=0;m<60;m+=5) { const o=document.createElement('option'); o.value=o.textContent=String(m).padStart(2,'0'); mSel.appendChild(o); }
+  })();
+
   // Tabs
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
@@ -173,217 +196,188 @@
   });
 
   // Chat toggle
-  const chatBox = document.getElementById('chat-box');
   document.getElementById('chat-toggle').addEventListener('click', () => {
-    chatBox.classList.toggle('open');
-    if (chatBox.classList.contains('open')) document.getElementById('chat-input').focus();
+    document.getElementById('chat-box').classList.toggle('open');
   });
 
   function badge(estado) {
-    const cls = estado === 'pendiente' ? 'badge-pendiente'
-      : (estado === 'listo' || estado === 'completada') ? 'badge-listo'
-      : estado === 'entregado' ? 'badge-entregado' : 'badge-pendiente';
+    const cls = estado==='pendiente'?'badge-pendiente':(estado==='listo'||estado==='completada')?'badge-listo':estado==='entregado'?'badge-entregado':'badge-pendiente';
     return `<span class="badge ${cls}">${estado}</span>`;
   }
 
+  function extrasHtml(extras) {
+    if (!extras || !Object.keys(extras).length) return '';
+    return Object.entries(extras).map(([k,v])=>`<span>${k}: ${v}</span>`).join(' | ');
+  }
+
+  let _equipo = [];
+
   function renderDashboard(data) {
-    const evento = data.evento || {};
-    const estado = data.estado || {};
-    const equipo = data.equipo || [];
-    const historial = data.historial || [];
-
-    document.getElementById('event-name').textContent = `- ${evento.nombre || ''}`;
-
-    let totalTasks = 0, doneTasks = 0;
-    equipo.forEach(p => p.tareas.forEach(t => {
-      totalTasks++;
-      if (t.estado === 'listo' || t.estado === 'completada') doneTasks++;
-    }));
-    const pct = totalTasks ? Math.round(doneTasks / totalTasks * 100) : 0;
-    const totalServices = Object.keys(estado).length;
-    const doneServices = Object.values(estado).filter(v => v.estado !== 'pendiente').length;
-
-    document.getElementById('event-summary').innerHTML = `
-      <div class="card"><div class="value">${evento.fecha || '-'}</div><div class="label">Fecha</div></div>
-      <div class="card"><div class="value">${evento.lugar || '-'}</div><div class="label">Lugar</div></div>
-      <div class="card"><div class="value">${doneServices}/${totalServices}</div><div class="label">Servicios listos</div></div>
-      <div class="card">
-        <div class="value">${pct}%</div><div class="label">Tareas completadas</div>
-        <div class="progress-bar" style="margin-top:8px"><div class="progress-fill" style="width:${pct}%"></div></div>
-      </div>`;
-
-    document.getElementById('services-grid').innerHTML = Object.entries(estado).map(([k, v]) =>
-      `<div class="card"><strong>${k}</strong><br>${badge(v.estado)}</div>`
-    ).join('');
-
-    const recent = historial.slice(-5).reverse();
-    document.getElementById('history-list').innerHTML = recent.length
-      ? recent.map(h => `<div style="padding:6px 0;font-size:0.85rem;border-bottom:1px solid #f0f0f0">
-          <strong>${h.tarea}</strong> ${h.responsable ? '(' + h.responsable + ')' : ''}:
-          ${h.estado_anterior || '?'} &rarr; ${h.estado_nuevo}
-          <span style="color:#888;font-size:0.75rem">${h.timestamp ? new Date(h.timestamp).toLocaleString() : ''}</span>
-        </div>`).join('')
-      : '<div style="color:#888;font-size:0.85rem">Sin cambios registrados</div>';
+    const evento=data.evento||{}, estado=data.estado||{}, equipo=data.equipo||[], historial=data.historial||[];
+    document.getElementById('event-name').textContent=`- ${evento.nombre||''}`;
+    let total=0,done=0;
+    equipo.forEach(p=>p.tareas.forEach(t=>{total++;if(t.estado==='listo'||t.estado==='completada')done++;}));
+    const pct=total?Math.round(done/total*100):0;
+    const ts=Object.keys(estado).length, ds=Object.values(estado).filter(v=>v.estado!=='pendiente').length;
+    document.getElementById('event-summary').innerHTML=`
+      <div class="card"><div class="value">${evento.fecha||'-'}</div><div class="label">Fecha</div></div>
+      <div class="card"><div class="value">${evento.lugar||'-'}</div><div class="label">Lugar</div></div>
+      <div class="card"><div class="value">${ds}/${ts}</div><div class="label">Servicios listos</div></div>
+      <div class="card"><div class="value">${pct}%</div><div class="label">Tareas completadas</div>
+        <div class="progress-bar" style="margin-top:8px"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
+    document.getElementById('services-grid').innerHTML=Object.entries(estado).map(([k,v])=>`<div class="card"><strong>${k}</strong><br>${badge(v.estado)}</div>`).join('');
+    const recent=historial.slice(-5).reverse();
+    document.getElementById('history-list').innerHTML=recent.length
+      ?recent.map(h=>`<div style="padding:6px 0;font-size:0.85rem;border-bottom:1px solid #f0f0f0">
+        <strong>${h.tarea}</strong> ${h.responsable?'('+h.responsable+')':''}:
+        ${h.estado_anterior||'?'} &rarr; ${h.estado_nuevo}
+        <span style="color:#888;font-size:0.75rem">${h.timestamp?new Date(h.timestamp).toLocaleString():''}</span></div>`).join('')
+      :'<div style="color:#888;font-size:0.85rem">Sin cambios registrados</div>';
   }
 
   function renderTeam(data) {
-    document.getElementById('team-list').innerHTML = (data.equipo || []).map(p => `
+    _equipo = data.equipo||[];
+    document.getElementById('team-list').innerHTML=_equipo.map(p=>`
       <div class="card person">
         <div class="person-header">${p.nombre} <span class="person-role">${p.rol}</span>
-          <button class="del-btn" onclick="delPerson('${p.nombre}')" title="Eliminar persona">&#10005;</button>
-        </div>
+          <button class="del-btn" onclick="delPerson('${p.nombre}')" title="Eliminar">&#10005;</button></div>
+        ${p.extras&&Object.keys(p.extras).length?'<div class="person-extras">'+extrasHtml(p.extras)+'</div>':''}
         <ul class="task-list">
-          ${p.tareas.map(t => `<li><span class="task-time">${t.hora}</span>${t.nombre} ${badge(t.estado)}
-            <button class="del-btn" onclick="delTask('${p.nombre}','${t.nombre}')" title="Eliminar tarea">&#10005;</button>
-          </li>`).join('')}
+          ${p.tareas.map(t=>`<li><span class="task-time">${t.hora}</span>${t.nombre} ${badge(t.estado)}
+            <button class="del-btn" onclick="delTask('${p.nombre}','${t.nombre}')" title="Eliminar">&#10005;</button></li>`).join('')}
         </ul>
       </div>`).join('');
+    // Update dropdowns
+    const pSel=document.getElementById('task-person');
+    pSel.innerHTML=_equipo.map(p=>`<option value="${p.nombre}">${p.nombre}</option>`).join('');
+    const allTasks=[];
+    _equipo.forEach(p=>p.tareas.forEach(t=>allTasks.push(t.nombre)));
+    const dSel=document.getElementById('task-dep');
+    dSel.innerHTML=allTasks.map(t=>`<option value="${t}">${t}</option>`).join('');
   }
 
   function renderVendors(data) {
-    const estado = data.estado || {};
-    document.getElementById('vendors-list').innerHTML = `<div class="card">
-      ${(data.proveedores || []).map(p => `<div class="vendor-card">
-        <div><div class="vendor-name">${p.empresa}</div><div class="vendor-service">${p.servicio}</div></div>
-        <div style="display:flex;align-items:center;gap:8px">
-          ${badge((estado[p.servicio] || {}).estado || 'sin estado')}
-          <button class="del-btn" onclick="delVendor('${p.servicio}')" title="Eliminar proveedor">&#10005;</button>
+    const estado=data.estado||{};
+    document.getElementById('vendors-list').innerHTML=`<div class="card">
+      ${(data.proveedores||[]).map(p=>`<div class="vendor-card">
+        <div><div class="vendor-name">${p.empresa}</div><div class="vendor-service">${p.servicio}</div>
+          ${p.extras&&Object.keys(p.extras).length?'<div class="vendor-extras">'+extrasHtml(p.extras)+'</div>':''}
         </div>
-      </div>`).join('')}
+        <div style="display:flex;align-items:center;gap:8px">
+          ${badge((estado[p.servicio]||{}).estado||'sin estado')}
+          <button class="del-btn" onclick="delVendor('${p.servicio}')" title="Eliminar">&#10005;</button>
+        </div></div>`).join('')}
     </div>`;
   }
 
   async function loadData() {
     try {
-      const res = await fetch('/api/evento');
-      if (!res.ok) throw new Error(res.statusText);
-      const data = await res.json();
-      renderDashboard(data);
-      renderTeam(data);
-      renderVendors(data);
+      const res=await fetch('/api/evento');
+      if(!res.ok) throw new Error(res.statusText);
+      const data=await res.json();
+      renderDashboard(data); renderTeam(data); renderVendors(data);
     } catch(e) {
-      document.getElementById('event-summary').innerHTML = '<div class="card" style="color:red">Error cargando datos del evento</div>';
+      document.getElementById('event-summary').innerHTML='<div class="card" style="color:red">Error cargando datos</div>';
     }
   }
 
-  // Form helpers
-  function showMsg(id, text, ok) {
-    const el = document.getElementById(id);
-    el.style.display = 'block';
-    el.style.background = ok ? '#d4edda' : '#f8d7da';
-    el.style.color = ok ? '#155724' : '#721c24';
-    el.textContent = text;
-    setTimeout(() => el.style.display = 'none', 3000);
+  // Extras fields
+  function addExtraField(containerId) {
+    const c=document.getElementById(containerId);
+    const row=document.createElement('div');
+    row.className='extras-row';
+    row.innerHTML=`<input placeholder="Campo" class="extra-key"><input placeholder="Valor" class="extra-val">
+      <button class="del-btn" onclick="this.parentElement.remove()" title="Quitar">&#10005;</button>`;
+    c.appendChild(row);
   }
 
-  async function postJSON(url, body) {
-    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  function getExtras(containerId) {
+    const extras={};
+    document.getElementById(containerId).querySelectorAll('.extras-row').forEach(row=>{
+      const k=row.querySelector('.extra-key').value.trim();
+      const v=row.querySelector('.extra-val').value.trim();
+      if(k&&v) extras[k]=v;
+    });
+    return extras;
+  }
+
+  function clearExtras(containerId) { document.getElementById(containerId).innerHTML=''; }
+
+  // Helpers
+  function showMsg(id,text,ok) {
+    const el=document.getElementById(id);
+    el.style.display='block'; el.style.background=ok?'#d4edda':'#f8d7da'; el.style.color=ok?'#155724':'#721c24';
+    el.textContent=text; setTimeout(()=>el.style.display='none',3000);
+  }
+  async function postJSON(url,body) {
+    const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     return res.json();
   }
 
   async function addPerson() {
-    const nombre = document.getElementById('new-person-name').value.trim();
-    const rol = document.getElementById('new-person-role').value.trim();
-    if (!nombre || !rol) return showMsg('person-msg', 'Nombre y rol requeridos', false);
-    const data = await postJSON('/api/equipo', { nombre, rol });
-    showMsg('person-msg', data.ok ? 'Persona agregada' : data.error, data.ok);
-    if (data.ok) { document.getElementById('new-person-name').value = ''; document.getElementById('new-person-role').value = ''; loadData(); }
+    const nombre=document.getElementById('new-person-name').value.trim();
+    const rol=document.getElementById('new-person-role').value.trim();
+    if(!nombre||!rol) return showMsg('person-msg','Nombre y rol requeridos',false);
+    const extras=getExtras('person-extras');
+    const data=await postJSON('/api/equipo',{nombre,rol,extras});
+    showMsg('person-msg',data.ok?'Persona agregada':data.error,data.ok);
+    if(data.ok){document.getElementById('new-person-name').value='';document.getElementById('new-person-role').value='';clearExtras('person-extras');loadData();}
   }
 
   async function addTask() {
-    const persona = document.getElementById('task-person').value.trim();
-    const nombre = document.getElementById('task-name').value.trim();
-    const hora = document.getElementById('task-time').value.trim();
-    const dep = document.getElementById('task-dep').value.trim();
-    if (!persona || !nombre || !hora) return showMsg('task-msg', 'Persona, tarea y hora requeridos', false);
-    const depende_de = dep ? dep.split(',').map(d => d.trim()) : [];
-    const data = await postJSON('/api/tarea', { persona, nombre, hora, depende_de });
-    showMsg('task-msg', data.ok ? 'Tarea agregada' : data.error, data.ok);
-    if (data.ok) { document.getElementById('task-name').value = ''; document.getElementById('task-time').value = ''; document.getElementById('task-dep').value = ''; loadData(); }
+    const persona=document.getElementById('task-person').value;
+    const nombre=document.getElementById('task-name').value.trim();
+    const h=document.getElementById('task-hour').value;
+    const m=document.getElementById('task-min').value;
+    if(!persona||!nombre) return showMsg('task-msg','Persona y tarea requeridos',false);
+    const hora=h+':'+m;
+    const depSel=document.getElementById('task-dep');
+    const depende_de=Array.from(depSel.selectedOptions).map(o=>o.value);
+    const data=await postJSON('/api/tarea',{persona,nombre,hora,depende_de});
+    showMsg('task-msg',data.ok?'Tarea agregada':data.error,data.ok);
+    if(data.ok){document.getElementById('task-name').value='';loadData();}
   }
 
   async function addVendor() {
-    const servicio = document.getElementById('vendor-service').value.trim();
-    const empresa = document.getElementById('vendor-company').value.trim();
-    if (!servicio || !empresa) return showMsg('vendor-msg', 'Servicio y empresa requeridos', false);
-    const data = await postJSON('/api/proveedor', { servicio, empresa });
-    showMsg('vendor-msg', data.ok ? 'Proveedor agregado' : data.error, data.ok);
-    if (data.ok) { document.getElementById('vendor-service').value = ''; document.getElementById('vendor-company').value = ''; loadData(); }
+    const servicio=document.getElementById('vendor-service').value.trim();
+    const empresa=document.getElementById('vendor-company').value.trim();
+    if(!servicio||!empresa) return showMsg('vendor-msg','Servicio y empresa requeridos',false);
+    const extras=getExtras('vendor-extras');
+    const data=await postJSON('/api/proveedor',{servicio,empresa,extras});
+    showMsg('vendor-msg',data.ok?'Proveedor agregado':data.error,data.ok);
+    if(data.ok){document.getElementById('vendor-service').value='';document.getElementById('vendor-company').value='';clearExtras('vendor-extras');loadData();}
   }
 
-  async function delPerson(nombre) {
-    if (!confirm('Eliminar a ' + nombre + ' y todas sus tareas?')) return;
-    const res = await fetch('/api/equipo/' + encodeURIComponent(nombre), { method: 'DELETE' });
-    const data = await res.json();
-    if (data.ok) loadData();
-  }
-
-  async function delTask(persona, tarea) {
-    if (!confirm('Eliminar tarea: ' + tarea + '?')) return;
-    const res = await fetch('/api/tarea/' + encodeURIComponent(persona) + '/' + encodeURIComponent(tarea), { method: 'DELETE' });
-    const data = await res.json();
-    if (data.ok) loadData();
-  }
-
-  async function delVendor(servicio) {
-    if (!confirm('Eliminar proveedor de ' + servicio + '?')) return;
-    const res = await fetch('/api/proveedor/' + encodeURIComponent(servicio), { method: 'DELETE' });
-    const data = await res.json();
-    if (data.ok) loadData();
-  }
+  async function delPerson(n){if(!confirm('Eliminar a '+n+'?')){return;}const r=await fetch('/api/equipo/'+encodeURIComponent(n),{method:'DELETE'});const d=await r.json();if(d.ok)loadData();}
+  async function delTask(p,t){if(!confirm('Eliminar tarea: '+t+'?')){return;}const r=await fetch('/api/tarea/'+encodeURIComponent(p)+'/'+encodeURIComponent(t),{method:'DELETE'});const d=await r.json();if(d.ok)loadData();}
+  async function delVendor(s){if(!confirm('Eliminar proveedor: '+s+'?')){return;}const r=await fetch('/api/proveedor/'+encodeURIComponent(s),{method:'DELETE'});const d=await r.json();if(d.ok)loadData();}
 
   // Chat
-  const messages = document.getElementById('messages');
-  const chatInput = document.getElementById('chat-input');
-  const chatSend = document.getElementById('chat-send');
-
-  function addMsg(text, cls) {
-    const div = document.createElement('div');
-    div.className = 'msg ' + cls;
-    div.textContent = text;
-    messages.appendChild(div);
-    messages.scrollTop = messages.scrollHeight;
+  const messages=document.getElementById('messages');
+  const chatInput=document.getElementById('chat-input');
+  const chatSend=document.getElementById('chat-send');
+  function addMsg(text,cls){const div=document.createElement('div');div.className='msg '+cls;div.textContent=text;messages.appendChild(div);messages.scrollTop=messages.scrollHeight;}
+  async function sendMessage(){
+    const text=chatInput.value.trim();if(!text)return;
+    addMsg(text,'user');chatInput.value='';chatSend.disabled=true;
+    try{const res=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text})});
+      const data=await res.json();addMsg(data.response,'bot');loadData();
+    }catch(e){addMsg('Error: '+e.message,'bot');}
+    chatSend.disabled=false;chatInput.focus();
   }
-
-  async function sendMessage() {
-    const text = chatInput.value.trim();
-    if (!text) return;
-    addMsg(text, 'user');
-    chatInput.value = '';
-    chatSend.disabled = true;
-    try {
-      const res = await fetch('/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: text }) });
-      const data = await res.json();
-      addMsg(data.response, 'bot');
-      loadData();
-    } catch (e) {
-      addMsg('Error de conexion: ' + e.message, 'bot');
-    }
-    chatSend.disabled = false;
-    chatInput.focus();
-  }
-
-  chatSend.addEventListener('click', sendMessage);
-  chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+  chatSend.addEventListener('click',sendMessage);
+  chatInput.addEventListener('keydown',e=>{if(e.key==='Enter')sendMessage();});
 
   // Upload
-  document.getElementById('upload-input').addEventListener('change', async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const msg = document.getElementById('upload-msg');
-    msg.style.display = 'block';
-    msg.style.background = '#fff3cd';
-    msg.textContent = 'Cargando evento...';
-    const form = new FormData();
-    form.append('file', file);
-    try {
-      const res = await fetch('/api/upload', { method: 'POST', body: form });
-      const data = await res.json();
-      if (data.ok) { msg.style.background = '#d4edda'; msg.textContent = 'Evento cargado: ' + data.evento; loadData(); }
-      else { msg.style.background = '#f8d7da'; msg.textContent = 'Error: ' + data.error; }
-    } catch(err) { msg.style.background = '#f8d7da'; msg.textContent = 'Error de conexion'; }
-    e.target.value = '';
-    setTimeout(() => msg.style.display = 'none', 4000);
+  document.getElementById('upload-input').addEventListener('change',async(e)=>{
+    const file=e.target.files[0];if(!file)return;
+    const msg=document.getElementById('upload-msg');msg.style.display='block';msg.style.background='#fff3cd';msg.textContent='Cargando...';
+    const form=new FormData();form.append('file',file);
+    try{const res=await fetch('/api/upload',{method:'POST',body:form});const data=await res.json();
+      if(data.ok){msg.style.background='#d4edda';msg.textContent='Evento cargado: '+data.evento;loadData();}
+      else{msg.style.background='#f8d7da';msg.textContent='Error: '+data.error;}
+    }catch(err){msg.style.background='#f8d7da';msg.textContent='Error de conexion';}
+    e.target.value='';setTimeout(()=>msg.style.display='none',4000);
   });
 
   loadData();

@@ -97,15 +97,19 @@ def build_context(evento):
 
     equipo_text = ""
     for p in evento.get("equipo", []):
+        extras = p.get("extras", {})
+        extras_str = ", ".join(f"{k}: {v}" for k, v in extras.items()) if extras else ""
         tareas = "\n".join([
             f"- {t['nombre']} ({t['hora']}) [{t['estado']}] "
             f"{'(hecho a las ' + datetime.fromisoformat(t['timestamp']).strftime('%H:%M') + ')' if t['timestamp'] else ''}"
             for t in p.get("tareas", [])
         ])
-        equipo_text += f"{p['nombre']} ({p['rol']}):\n{tareas}\n\n"
+        equipo_text += f"{p['nombre']} ({p['rol']}){' [' + extras_str + ']' if extras_str else ''}:\n{tareas}\n\n"
 
     proveedores_text = "\n".join([
-        f"- {p['servicio']}: {p['empresa']}" for p in evento.get("proveedores", [])
+        f"- {pr['servicio']}: {pr['empresa']}" +
+        (" (" + ", ".join(f"{k}: {v}" for k, v in pr.get("extras", {}).items()) + ")" if pr.get("extras") else "")
+        for pr in evento.get("proveedores", [])
     ]) or "Sin proveedores"
 
     estado_text = "\n".join([f"{k}: {v['estado']}" for k, v in evento["estado"].items()])

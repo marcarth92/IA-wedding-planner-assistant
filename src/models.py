@@ -31,10 +31,14 @@ def load_event():
     # asegurar tareas del equipo
     for persona in data.get("equipo", []):
         persona.setdefault("tareas", [])
+        persona.setdefault("extras", {})
         for t in persona["tareas"]:
             t.setdefault("estado", "pendiente")
             t.setdefault("timestamp", None)
             t.setdefault("depende_de", [])
+
+    for prov in data.get("proveedores", []):
+        prov.setdefault("extras", {})
 
     return data
 
