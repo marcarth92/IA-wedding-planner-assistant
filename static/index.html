@@ -8,38 +8,31 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: system-ui, sans-serif; background: #f0f2f5; height: 100vh; display: flex; flex-direction: column; }
 
-  /* Header */
   #header { background: #2c2c2c; color: #fff; padding: 14px 20px; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
   #header span { font-size: 0.85rem; opacity: 0.6; }
 
-  /* Tabs */
   #tabs { display: flex; background: #fff; border-bottom: 2px solid #e0e0e0; }
   .tab { padding: 12px 24px; cursor: pointer; font-size: 0.95rem; color: #555; border-bottom: 3px solid transparent; transition: all 0.2s; }
   .tab:hover { color: #000; }
   .tab.active { color: #0084ff; border-bottom-color: #0084ff; font-weight: 600; }
 
-  /* Panels */
-  .panel { display: none; flex: 1; overflow-y: auto; padding: 20px; }
+  .panel { display: none; flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; }
   .panel.active { display: flex; flex-direction: column; }
 
-  /* Cards */
   .card { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
   .card h3 { font-size: 0.95rem; margin-bottom: 10px; color: #333; }
   .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
 
-  /* Status badges */
   .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 600; }
   .badge-pendiente { background: #fff3cd; color: #856404; }
   .badge-listo, .badge-completada { background: #d4edda; color: #155724; }
   .badge-entregado { background: #cce5ff; color: #004085; }
 
-  /* Event info */
   .event-info { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
   .event-info .card { flex: 1; min-width: 200px; text-align: center; }
   .event-info .card .value { font-size: 1.5rem; font-weight: 700; color: #0084ff; }
   .event-info .card .label { font-size: 0.8rem; color: #888; margin-top: 4px; }
 
-  /* Team */
   .person { margin-bottom: 14px; }
   .person-header { font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
   .person-role { font-size: 0.78rem; color: #888; font-weight: 400; }
@@ -47,32 +40,45 @@
   .task-list li { padding: 4px 0; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; }
   .task-time { color: #888; font-size: 0.78rem; min-width: 45px; }
 
-  /* Vendors */
   .vendor-card { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
   .vendor-card:last-child { border-bottom: none; }
   .vendor-name { font-weight: 600; font-size: 0.9rem; }
   .vendor-service { font-size: 0.8rem; color: #888; }
 
-  /* Chat */
-  #chat-panel { padding: 0; }
-  #messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
-  .msg { max-width: 75%; padding: 10px 14px; border-radius: 12px; line-height: 1.4; white-space: pre-wrap; word-wrap: break-word; font-size: 0.9rem; }
-  .user { align-self: flex-end; background: #0084ff; color: #fff; }
-  .bot { align-self: flex-start; background: #e4e6eb; color: #000; }
-  #input-area { display: flex; padding: 12px; gap: 8px; background: #fff; border-top: 1px solid #ddd; }
-  #input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem; outline: none; }
-  #input:focus { border-color: #0084ff; }
-  #send { padding: 10px 20px; background: #0084ff; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 0.95rem; }
-  #send:disabled { opacity: 0.5; cursor: not-allowed; }
+  .progress-bar { background: #e9ecef; border-radius: 8px; height: 8px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #28a745; border-radius: 8px; transition: width 0.3s; }
 
-  .btn-sm { padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; text-decoration: none; cursor: pointer; border: 1px solid #ccc; background: #fff; color: #333; }
+  .btn-sm { padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; text-decoration: none; cursor: pointer; border: 1px solid #ccc; background: #fff; color: #333; display: inline-block; }
   .btn-sm:hover { background: #f0f0f0; }
   .btn-primary { background: #0084ff; color: #fff; border-color: #0084ff; }
   .btn-primary:hover { background: #0070dd; }
 
-  /* Progress bar */
-  .progress-bar { background: #e9ecef; border-radius: 8px; height: 8px; overflow: hidden; }
-  .progress-fill { height: 100%; background: #28a745; border-radius: 8px; transition: width 0.3s; }
+  /* Forms */
+  .form-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: flex-end; }
+  .form-row input { padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.85rem; }
+  .form-row button { padding: 8px 16px; border: none; border-radius: 6px; background: #0084ff; color: #fff; cursor: pointer; font-size: 0.85rem; }
+  .form-row button:hover { background: #0070dd; }
+  .form-label { font-size: 0.75rem; color: #888; display: block; margin-bottom: 2px; }
+  .form-group { display: flex; flex-direction: column; }
+  .form-msg { font-size: 0.8rem; margin-top: 6px; padding: 4px 8px; border-radius: 4px; display: none; }
+
+  .del-btn { background: none; border: none; color: #cc0000; cursor: pointer; font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; }
+  .del-btn:hover { background: #fee; }
+
+  /* Floating chat */
+  #chat-toggle { position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; border-radius: 50%; background: #0084ff; color: #fff; border: none; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1000; display: flex; align-items: center; justify-content: center; }
+  #chat-box { position: fixed; bottom: 86px; right: 20px; width: 380px; height: 480px; background: #fff; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.15); z-index: 1000; display: none; flex-direction: column; overflow: hidden; }
+  #chat-box.open { display: flex; }
+  #chat-header { background: #2c2c2c; color: #fff; padding: 12px 16px; font-size: 0.9rem; font-weight: 600; }
+  #messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .msg { max-width: 85%; padding: 8px 12px; border-radius: 10px; line-height: 1.4; white-space: pre-wrap; word-wrap: break-word; font-size: 0.85rem; }
+  .user { align-self: flex-end; background: #0084ff; color: #fff; }
+  .bot { align-self: flex-start; background: #e4e6eb; color: #000; }
+  #chat-input-area { display: flex; padding: 10px; gap: 6px; border-top: 1px solid #eee; }
+  #chat-input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.85rem; outline: none; }
+  #chat-input:focus { border-color: #0084ff; }
+  #chat-send { padding: 8px 14px; background: #0084ff; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+  #chat-send:disabled { opacity: 0.5; }
 </style>
 </head>
 <body>
@@ -82,9 +88,9 @@
     <div class="tab active" data-panel="dashboard-panel">Evento</div>
     <div class="tab" data-panel="team-panel">Equipo</div>
     <div class="tab" data-panel="vendors-panel">Proveedores</div>
-    <div class="tab" data-panel="chat-panel">Chat</div>
     <div style="margin-left:auto;display:flex;align-items:center;gap:8px;padding-right:12px">
-      <a href="/api/template" class="btn-sm">Descargar Template</a>
+      <a href="/api/template" class="btn-sm">Plantilla</a>
+      <a href="/api/export" class="btn-sm">Exportar</a>
       <label class="btn-sm btn-primary" for="upload-input">Subir Excel</label>
       <input type="file" id="upload-input" accept=".xlsx" hidden>
     </div>
@@ -105,18 +111,53 @@
   </div>
 
   <!-- Team -->
-  <div id="team-panel" class="panel"></div>
+  <div id="team-panel" class="panel">
+    <div id="team-list"></div>
+    <div class="card">
+      <h3>Agregar Persona</h3>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label" for="new-person-name">Nombre</label><input id="new-person-name" placeholder="Nombre"></div>
+        <div class="form-group"><label class="form-label" for="new-person-role">Rol</label><input id="new-person-role" placeholder="Rol"></div>
+        <button onclick="addPerson()">Agregar</button>
+      </div>
+      <div class="form-msg" id="person-msg"></div>
+    </div>
+    <div class="card">
+      <h3>Agregar Tarea</h3>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label" for="task-person">Persona</label><input id="task-person" placeholder="Nombre persona"></div>
+        <div class="form-group"><label class="form-label" for="task-name">Tarea</label><input id="task-name" placeholder="Nombre tarea"></div>
+        <div class="form-group"><label class="form-label" for="task-time">Hora</label><input id="task-time" placeholder="HH:MM" style="width:70px"></div>
+        <div class="form-group"><label class="form-label" for="task-dep">Depende de</label><input id="task-dep" placeholder="tarea1, tarea2"></div>
+        <button onclick="addTask()">Agregar</button>
+      </div>
+      <div class="form-msg" id="task-msg"></div>
+    </div>
+  </div>
 
   <!-- Vendors -->
-  <div id="vendors-panel" class="panel"></div>
+  <div id="vendors-panel" class="panel">
+    <div id="vendors-list"></div>
+    <div class="card">
+      <h3>Agregar Proveedor</h3>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label" for="vendor-service">Servicio</label><input id="vendor-service" placeholder="Servicio"></div>
+        <div class="form-group"><label class="form-label" for="vendor-company">Empresa</label><input id="vendor-company" placeholder="Empresa"></div>
+        <button onclick="addVendor()">Agregar</button>
+      </div>
+      <div class="form-msg" id="vendor-msg"></div>
+    </div>
+  </div>
 
-  <!-- Chat -->
-  <div id="chat-panel" class="panel">
+  <!-- Floating Chat -->
+  <button id="chat-toggle" aria-label="Abrir chat">&#128172;</button>
+  <div id="chat-box">
+    <div id="chat-header">Chat AI</div>
     <div id="messages"></div>
-    <div id="input-area">
-      <label for="input" class="sr-only" hidden>Mensaje</label>
-      <input id="input" type="text" placeholder="Escribe tu pregunta..." autocomplete="off">
-      <button id="send">Enviar</button>
+    <div id="chat-input-area">
+      <label for="chat-input" hidden>Mensaje</label>
+      <input id="chat-input" type="text" placeholder="Escribe tu pregunta..." autocomplete="off">
+      <button id="chat-send">Enviar</button>
     </div>
   </div>
 
@@ -129,6 +170,13 @@
       tab.classList.add('active');
       document.getElementById(tab.dataset.panel).classList.add('active');
     });
+  });
+
+  // Chat toggle
+  const chatBox = document.getElementById('chat-box');
+  document.getElementById('chat-toggle').addEventListener('click', () => {
+    chatBox.classList.toggle('open');
+    if (chatBox.classList.contains('open')) document.getElementById('chat-input').focus();
   });
 
   function badge(estado) {
@@ -146,14 +194,12 @@
 
     document.getElementById('event-name').textContent = `- ${evento.nombre || ''}`;
 
-    // Count tasks
     let totalTasks = 0, doneTasks = 0;
     equipo.forEach(p => p.tareas.forEach(t => {
       totalTasks++;
       if (t.estado === 'listo' || t.estado === 'completada') doneTasks++;
     }));
     const pct = totalTasks ? Math.round(doneTasks / totalTasks * 100) : 0;
-
     const totalServices = Object.keys(estado).length;
     const doneServices = Object.values(estado).filter(v => v.estado !== 'pendiente').length;
 
@@ -164,48 +210,45 @@
       <div class="card">
         <div class="value">${pct}%</div><div class="label">Tareas completadas</div>
         <div class="progress-bar" style="margin-top:8px"><div class="progress-fill" style="width:${pct}%"></div></div>
-      </div>
-    `;
+      </div>`;
 
-    // Services grid
     document.getElementById('services-grid').innerHTML = Object.entries(estado).map(([k, v]) =>
       `<div class="card"><strong>${k}</strong><br>${badge(v.estado)}</div>`
     ).join('');
 
-    // History
     const recent = historial.slice(-5).reverse();
     document.getElementById('history-list').innerHTML = recent.length
       ? recent.map(h => `<div style="padding:6px 0;font-size:0.85rem;border-bottom:1px solid #f0f0f0">
-          <strong>${h.tarea}</strong> ${h.responsable ? '(' + h.responsable + ')' : ''}: 
-          ${h.estado_anterior || '?'} → ${h.estado_nuevo} 
+          <strong>${h.tarea}</strong> ${h.responsable ? '(' + h.responsable + ')' : ''}:
+          ${h.estado_anterior || '?'} &rarr; ${h.estado_nuevo}
           <span style="color:#888;font-size:0.75rem">${h.timestamp ? new Date(h.timestamp).toLocaleString() : ''}</span>
         </div>`).join('')
       : '<div style="color:#888;font-size:0.85rem">Sin cambios registrados</div>';
   }
 
   function renderTeam(data) {
-    const equipo = data.equipo || [];
-    document.getElementById('team-panel').innerHTML = equipo.map(p => `
+    document.getElementById('team-list').innerHTML = (data.equipo || []).map(p => `
       <div class="card person">
-        <div class="person-header">${p.nombre} <span class="person-role">${p.rol}</span></div>
+        <div class="person-header">${p.nombre} <span class="person-role">${p.rol}</span>
+          <button class="del-btn" onclick="delPerson('${p.nombre}')" title="Eliminar persona">&#10005;</button>
+        </div>
         <ul class="task-list">
-          ${p.tareas.map(t => `<li>
-            <span class="task-time">${t.hora}</span>
-            ${t.nombre}
-            ${badge(t.estado)}
+          ${p.tareas.map(t => `<li><span class="task-time">${t.hora}</span>${t.nombre} ${badge(t.estado)}
+            <button class="del-btn" onclick="delTask('${p.nombre}','${t.nombre}')" title="Eliminar tarea">&#10005;</button>
           </li>`).join('')}
         </ul>
-      </div>
-    `).join('');
+      </div>`).join('');
   }
 
   function renderVendors(data) {
-    const proveedores = data.proveedores || [];
     const estado = data.estado || {};
-    document.getElementById('vendors-panel').innerHTML = `<div class="card">
-      ${proveedores.map(p => `<div class="vendor-card">
+    document.getElementById('vendors-list').innerHTML = `<div class="card">
+      ${(data.proveedores || []).map(p => `<div class="vendor-card">
         <div><div class="vendor-name">${p.empresa}</div><div class="vendor-service">${p.servicio}</div></div>
-        ${badge((estado[p.servicio] || {}).estado || 'sin estado')}
+        <div style="display:flex;align-items:center;gap:8px">
+          ${badge((estado[p.servicio] || {}).estado || 'sin estado')}
+          <button class="del-btn" onclick="delVendor('${p.servicio}')" title="Eliminar proveedor">&#10005;</button>
+        </div>
       </div>`).join('')}
     </div>`;
   }
@@ -219,15 +262,80 @@
       renderTeam(data);
       renderVendors(data);
     } catch(e) {
-      console.error('Error cargando datos:', e);
       document.getElementById('event-summary').innerHTML = '<div class="card" style="color:red">Error cargando datos del evento</div>';
     }
   }
 
+  // Form helpers
+  function showMsg(id, text, ok) {
+    const el = document.getElementById(id);
+    el.style.display = 'block';
+    el.style.background = ok ? '#d4edda' : '#f8d7da';
+    el.style.color = ok ? '#155724' : '#721c24';
+    el.textContent = text;
+    setTimeout(() => el.style.display = 'none', 3000);
+  }
+
+  async function postJSON(url, body) {
+    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    return res.json();
+  }
+
+  async function addPerson() {
+    const nombre = document.getElementById('new-person-name').value.trim();
+    const rol = document.getElementById('new-person-role').value.trim();
+    if (!nombre || !rol) return showMsg('person-msg', 'Nombre y rol requeridos', false);
+    const data = await postJSON('/api/equipo', { nombre, rol });
+    showMsg('person-msg', data.ok ? 'Persona agregada' : data.error, data.ok);
+    if (data.ok) { document.getElementById('new-person-name').value = ''; document.getElementById('new-person-role').value = ''; loadData(); }
+  }
+
+  async function addTask() {
+    const persona = document.getElementById('task-person').value.trim();
+    const nombre = document.getElementById('task-name').value.trim();
+    const hora = document.getElementById('task-time').value.trim();
+    const dep = document.getElementById('task-dep').value.trim();
+    if (!persona || !nombre || !hora) return showMsg('task-msg', 'Persona, tarea y hora requeridos', false);
+    const depende_de = dep ? dep.split(',').map(d => d.trim()) : [];
+    const data = await postJSON('/api/tarea', { persona, nombre, hora, depende_de });
+    showMsg('task-msg', data.ok ? 'Tarea agregada' : data.error, data.ok);
+    if (data.ok) { document.getElementById('task-name').value = ''; document.getElementById('task-time').value = ''; document.getElementById('task-dep').value = ''; loadData(); }
+  }
+
+  async function addVendor() {
+    const servicio = document.getElementById('vendor-service').value.trim();
+    const empresa = document.getElementById('vendor-company').value.trim();
+    if (!servicio || !empresa) return showMsg('vendor-msg', 'Servicio y empresa requeridos', false);
+    const data = await postJSON('/api/proveedor', { servicio, empresa });
+    showMsg('vendor-msg', data.ok ? 'Proveedor agregado' : data.error, data.ok);
+    if (data.ok) { document.getElementById('vendor-service').value = ''; document.getElementById('vendor-company').value = ''; loadData(); }
+  }
+
+  async function delPerson(nombre) {
+    if (!confirm('Eliminar a ' + nombre + ' y todas sus tareas?')) return;
+    const res = await fetch('/api/equipo/' + encodeURIComponent(nombre), { method: 'DELETE' });
+    const data = await res.json();
+    if (data.ok) loadData();
+  }
+
+  async function delTask(persona, tarea) {
+    if (!confirm('Eliminar tarea: ' + tarea + '?')) return;
+    const res = await fetch('/api/tarea/' + encodeURIComponent(persona) + '/' + encodeURIComponent(tarea), { method: 'DELETE' });
+    const data = await res.json();
+    if (data.ok) loadData();
+  }
+
+  async function delVendor(servicio) {
+    if (!confirm('Eliminar proveedor de ' + servicio + '?')) return;
+    const res = await fetch('/api/proveedor/' + encodeURIComponent(servicio), { method: 'DELETE' });
+    const data = await res.json();
+    if (data.ok) loadData();
+  }
+
   // Chat
   const messages = document.getElementById('messages');
-  const input = document.getElementById('input');
-  const send = document.getElementById('send');
+  const chatInput = document.getElementById('chat-input');
+  const chatSend = document.getElementById('chat-send');
 
   function addMsg(text, cls) {
     const div = document.createElement('div');
@@ -238,31 +346,27 @@
   }
 
   async function sendMessage() {
-    const text = input.value.trim();
+    const text = chatInput.value.trim();
     if (!text) return;
     addMsg(text, 'user');
-    input.value = '';
-    send.disabled = true;
+    chatInput.value = '';
+    chatSend.disabled = true;
     try {
-      const res = await fetch('/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text })
-      });
+      const res = await fetch('/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: text }) });
       const data = await res.json();
       addMsg(data.response, 'bot');
       loadData();
     } catch (e) {
       addMsg('Error de conexion: ' + e.message, 'bot');
     }
-    send.disabled = false;
-    input.focus();
+    chatSend.disabled = false;
+    chatInput.focus();
   }
 
-  send.addEventListener('click', sendMessage);
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+  chatSend.addEventListener('click', sendMessage);
+  chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
 
-  // Upload Excel
+  // Upload
   document.getElementById('upload-input').addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -275,18 +379,9 @@
     try {
       const res = await fetch('/api/upload', { method: 'POST', body: form });
       const data = await res.json();
-      if (data.ok) {
-        msg.style.background = '#d4edda';
-        msg.textContent = 'Evento cargado: ' + data.evento;
-        loadData();
-      } else {
-        msg.style.background = '#f8d7da';
-        msg.textContent = 'Error: ' + data.error;
-      }
-    } catch(err) {
-      msg.style.background = '#f8d7da';
-      msg.textContent = 'Error de conexion';
-    }
+      if (data.ok) { msg.style.background = '#d4edda'; msg.textContent = 'Evento cargado: ' + data.evento; loadData(); }
+      else { msg.style.background = '#f8d7da'; msg.textContent = 'Error: ' + data.error; }
+    } catch(err) { msg.style.background = '#f8d7da'; msg.textContent = 'Error de conexion'; }
     e.target.value = '';
     setTimeout(() => msg.style.display = 'none', 4000);
   });
