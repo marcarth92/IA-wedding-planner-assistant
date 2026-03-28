@@ -88,3 +88,37 @@ def create_template(filepath):
     ws.append(["catering", "Banquetes del Valle"])
 
     wb.save(filepath)
+
+
+def export_evento(data, filepath):
+    wb = Workbook()
+
+    # Evento
+    ws = wb.active
+    ws.title = "Evento"
+    ws.append(["Campo", "Valor"])
+    evento = data.get("evento", {})
+    ws.append(["Nombre", evento.get("nombre", "")])
+    ws.append(["Fecha", evento.get("fecha", "")])
+    ws.append(["Lugar", evento.get("lugar", "")])
+
+    # Equipo
+    ws = wb.create_sheet("Equipo")
+    ws.append(["Persona", "Rol", "Tarea", "Hora", "Estado", "Depende de"])
+    for p in data.get("equipo", []):
+        for t in p.get("tareas", []):
+            ws.append([
+                p["nombre"], p["rol"], t["nombre"], t["hora"],
+                t.get("estado", "pendiente"),
+                ", ".join(t.get("depende_de", [])),
+            ])
+
+    # Proveedores
+    ws = wb.create_sheet("Proveedores")
+    ws.append(["Servicio", "Empresa", "Estado"])
+    estado = data.get("estado", {})
+    for prov in data.get("proveedores", []):
+        s = estado.get(prov["servicio"], {})
+        ws.append([prov["servicio"], prov["empresa"], s.get("estado", "")])
+
+    wb.save(filepath)
