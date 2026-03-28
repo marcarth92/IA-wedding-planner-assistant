@@ -40,6 +40,7 @@ class ChatRequest(BaseModel):
 class AddPersonRequest(BaseModel):
     nombre: str
     rol: str
+    extras: dict = {}
 
 
 class AddTaskRequest(BaseModel):
@@ -52,6 +53,7 @@ class AddTaskRequest(BaseModel):
 class AddVendorRequest(BaseModel):
     servicio: str
     empresa: str
+    extras: dict = {}
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -104,7 +106,7 @@ def add_person(req: AddPersonRequest):
     for p in evento["equipo"]:
         if p["nombre"].lower() == req.nombre.lower():
             return {"ok": False, "error": "Persona ya existe"}
-    evento["equipo"].append({"nombre": req.nombre, "rol": req.rol, "tareas": []})
+    evento["equipo"].append({"nombre": req.nombre, "rol": req.rol, "tareas": [], "extras": req.extras})
     save_event(evento)
     return {"ok": True}
 
@@ -132,7 +134,7 @@ def add_vendor(req: AddVendorRequest):
     for prov in evento["proveedores"]:
         if prov["servicio"].lower() == req.servicio.lower():
             return {"ok": False, "error": "Servicio ya existe"}
-    evento["proveedores"].append({"servicio": req.servicio, "empresa": req.empresa})
+    evento["proveedores"].append({"servicio": req.servicio, "empresa": req.empresa, "extras": req.extras})
     evento["estado"][req.servicio] = {"estado": "pendiente", "timestamp": None}
     save_event(evento)
     return {"ok": True}
