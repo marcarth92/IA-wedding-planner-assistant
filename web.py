@@ -1,6 +1,5 @@
 """Wedding AI Agent — Web API."""
 
-import json
 import os
 import sys
 import tempfile
@@ -17,6 +16,7 @@ from src.models import load_event, save_event
 from src.coordinator import build_context
 from src.skills import discover_skills
 from src.excel_parser import parse_excel, create_template, export_evento
+from src import db
 
 load_dotenv(override=False)
 
@@ -106,25 +106,14 @@ def add_person(req: AddPersonRequest):
     for p in evento["equipo"]:
         if p["nombre"].lower() == req.nombre.lower():
             return {"ok": False, "error": "Persona ya existe"}
-    evento["equipo"].append({"nombre": req.nombre, "rol": req.rol, "tareas": [], "extras": req.extras})
-    save_event(evento)
+    db.add_persona(req.nombre, req.rol, req.extras)
     return {"ok": True}
 
 
 @app.post("/api/tarea")
 def add_task(req: AddTaskRequest):
-    evento = load_event()
-    for p in evento["equipo"]:
-        if p["nombre"].lower() == req.persona.lower():
-            p["tareas"].append({
-                "nombre": req.nombre,
-                "hora": req.hora,
-                "estado": "pendiente",
-                "timestamp": None,
-                "depende_de": req.depende_de,
-            })
-            save_event(evento)
-            return {"ok": True}
+    if db.add_tarea(req.persona, req.nombre, req.hora, req.depende_de):
+        return {"ok": True}
     return {"ok": False, "error": "Persona no encontrada"}
 
 
@@ -134,47 +123,29 @@ def add_vendor(req: AddVendorRequest):
     for prov in evento["proveedores"]:
         if prov["servicio"].lower() == req.servicio.lower():
             return {"ok": False, "error": "Servicio ya existe"}
-    evento["proveedores"].append({"servicio": req.servicio, "empresa": req.empresa, "extras": req.extras})
-    evento["estado"][req.servicio] = {"estado": "pendiente", "timestamp": None}
-    save_event(evento)
+    db.add_proveedor(req.servicio, req.empresa, req.extras)
     return {"ok": True}
 
 
 @app.delete("/api/equipo/{nombre}")
 def delete_person(nombre: str):
-    evento = load_event()
-    original = len(evento["equipo"])
-    evento["equipo"] = [p for p in evento["equipo"] if p["nombre"].lower() != nombre.lower()]
-    if len(evento["equipo"]) == original:
-        return {"ok": False, "error": "Persona no encontrada"}
-    save_event(evento)
-    return {"ok": True}
+    if db.delete_persona(nombre):
+        return {"ok": True}
+    return {"ok": False, "error": "Persona no encontrada"}
 
 
 @app.delete("/api/tarea/{persona}/{tarea}")
 def delete_task(persona: str, tarea: str):
-    evento = load_event()
-    for p in evento["equipo"]:
-        if p["nombre"].lower() == persona.lower():
-            original = len(p["tareas"])
-            p["tareas"] = [t for t in p["tareas"] if t["nombre"].lower() != tarea.lower()]
-            if len(p["tareas"]) < original:
-                save_event(evento)
-                return {"ok": True}
-            return {"ok": False, "error": "Tarea no encontrada"}
-    return {"ok": False, "error": "Persona no encontrada"}
+    if db.delete_tarea(persona, tarea):
+        return {"ok": True}
+    return {"ok": False, "error": "Tarea no encontrada"}
 
 
 @app.delete("/api/proveedor/{servicio}")
 def delete_vendor(servicio: str):
-    evento = load_event()
-    original = len(evento["proveedores"])
-    evento["proveedores"] = [p for p in evento["proveedores"] if p["servicio"].lower() != servicio.lower()]
-    if len(evento["proveedores"]) == original:
-        return {"ok": False, "error": "Proveedor no encontrado"}
-    evento["estado"].pop(servicio.lower(), None)
-    save_event(evento)
-    return {"ok": True}
+    if db.delete_proveedor(servicio):
+        return {"ok": True}
+    return {"ok": False, "error": "Proveedor no encontrado"}
 
 
 @app.post("/chat")
