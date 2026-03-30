@@ -1,7 +1,5 @@
-__pycache__/
-*.pyc
 venv/
-.venv/
+__pycache__/
 .env
-.vscode/
-*.log
+evento.db
+evento.json.bak

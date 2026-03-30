@@ -1,11 +1,14 @@
-"""Lógica de actualización de estado y contexto para el LLM."""
+"""Logica de actualizacion de estado y contexto para el LLM."""
 
 from datetime import datetime
 
 import pytz
 
 from src import MEXICO_TZ
-from src.models import save_event
+from src.db import (
+    update_estado_servicio, update_tarea_persona,
+    add_historial, pop_last_historial, load_event_from_db,
+)
 from src.timeline import analyze_timeline, auto_coordinator
 
 _tz = pytz.timezone(MEXICO_TZ)
@@ -28,10 +31,8 @@ def update_event_status(evento, task, status):
     timestamp = datetime.now(_tz).isoformat()
     estado_actual = evento["estado"][task]["estado"]
 
-    evento["estado"][task]["estado"] = status
-    evento["estado"][task]["timestamp"] = timestamp
-
-    evento["historial"].append({
+    update_estado_servicio(task, status, timestamp)
+    add_historial({
         "tarea": task,
         "estado_anterior": estado_actual,
         "estado_nuevo": status,
@@ -40,8 +41,7 @@ def update_event_status(evento, task, status):
         "source": "llm",
     })
 
-    save_event(evento)
-    return f"{task}: {estado_actual} → {status} ({classify_change(estado_actual, status)})"
+    return f"{task}: {estado_actual} -> {status} ({classify_change(estado_actual, status)})"
 
 
 def update_person_task(evento, person, task_name, status):
@@ -52,10 +52,8 @@ def update_person_task(evento, person, task_name, status):
             for t in p["tareas"]:
                 if t["nombre"].lower() == task_name.lower():
                     old = t["estado"]
-                    t["estado"] = status
-                    t["timestamp"] = timestamp
-
-                    evento["historial"].append({
+                    update_tarea_persona(person, task_name, status, timestamp)
+                    add_historial({
                         "tarea": task_name,
                         "responsable": person,
                         "estado_anterior": old,
@@ -64,31 +62,23 @@ def update_person_task(evento, person, task_name, status):
                         "tipo": classify_change(old, status),
                         "source": "llm",
                     })
+                    return f"{person} - {task_name}: {old} -> {status}"
 
-                    save_event(evento)
-                    return f"{person} - {task_name}: {old} → {status}"
-
-    return "No se encontró la tarea o persona."
+    return "No se encontro la tarea o persona."
 
 
 def undo_last_change(evento):
-    if not evento["historial"]:
+    last = pop_last_historial()
+    if not last:
         return "Nada que deshacer."
 
-    last = evento["historial"].pop()
-
-    if "responsable" in last:
-        for p in evento["equipo"]:
-            if p["nombre"] == last["responsable"]:
-                for t in p["tareas"]:
-                    if t["nombre"] == last["tarea"]:
-                        t["estado"] = last["estado_anterior"] or "pendiente"
-                        t["timestamp"] = None
+    if last.get("responsable"):
+        update_tarea_persona(last["responsable"], last["tarea"],
+                             last["estado_anterior"] or "pendiente", None)
     else:
-        evento["estado"][last["tarea"]]["estado"] = last["estado_anterior"] or "pendiente"
+        update_estado_servicio(last["tarea"], last["estado_anterior"] or "pendiente", None)
 
-    save_event(evento)
-    return "Último cambio deshecho."
+    return "Ultimo cambio deshecho."
 
 
 def build_context(evento):
@@ -126,7 +116,7 @@ Proveedores:
 Equipo (staff del wedding planner):
 {equipo_text}
 
-Análisis:
+Analisis:
 - Atrasadas: {len(inteligencia['atrasadas'])}
 - En riesgo: {len(inteligencia['en_riesgo'])}
 - Completadas: {inteligencia['completadas']}
@@ -135,6 +125,6 @@ Alertas:
 {acciones_text}
 
 REGLAS:
-- Usa timestamp para responder "a qué hora se hizo"
+- Usa timestamp para responder "a que hora se hizo"
 - Da recomendaciones claras
-- NO reasignes tareas automáticamente"""
+- NO reasignes tareas automaticamente"""

@@ -1,6 +1,6 @@
-"""Constantes y estados válidos del sistema."""
+"""Constantes y estados validos del sistema."""
 
 ESTADOS = {"pendiente", "listo", "entregado", "completada"}
 
 MEXICO_TZ = "America/Mexico_City"
-DATA_FILE = "evento.json"
+DB_FILE = "evento.db"
